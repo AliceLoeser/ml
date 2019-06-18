@@ -64,8 +64,6 @@ Theta2_grad = zeros(size(Theta2));
 
 
 
-
-
 % y to matrix
 y_matrix = eye(num_labels)(y,:);
 
@@ -90,10 +88,15 @@ reg = (lambda / (2*m)) * (sum(sum(Theta1_unbias.^2)) + sum(sum(Theta2_unbias.^2)
 % Cost function regularized
 J = (1/m) * sum(sum((-y_matrix).*log(a3) - (1-y_matrix).*log(1-a3), 2)) + reg;
 
+% Back propagation
+d3 = a3 - y_matrix;
+d2 = d3*Theta2_unbias .* sigmoidGradient(z2);
 
+Delta_1 = d2' * a1;
+Delta_2 = d3' * a2;
 
-
-
+Theta1_grad = (1/m) * Delta_1;
+Theta2_grad = (1/m) * Delta_2;
 
 % -------------------------------------------------------------
 
