@@ -95,9 +95,15 @@ d2 = d3*Theta2_unbias .* sigmoidGradient(z2);
 Delta_1 = d2' * a1;
 Delta_2 = d3' * a2;
 
-Theta1_grad = (1/m) * Delta_1;
-Theta2_grad = (1/m) * Delta_2;
 
+% Regularization
+Theta1(:,1) = 0;
+Theta2(:,1) = 0;
+Theta1 = (lambda/m) * Theta1;
+Theta2 = (lambda/m) * Theta2;
+
+Theta1_grad = (1/m) * Delta_1 + Theta1;
+Theta2_grad = (1/m) * Delta_2 + Theta2;
 % -------------------------------------------------------------
 
 % =========================================================================
