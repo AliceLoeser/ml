@@ -66,21 +66,29 @@ Theta2_grad = zeros(size(Theta2));
 
 
 
+% y to matrix
 y_matrix = eye(num_labels)(y,:);
 
-
-a1 =  [ones(rows(X),1), X];
+% Forward propagation
+a1 =  [ones(rows(X),1), X]; % Add bias
 z2 = a1 * Theta1';
 a2 = sigmoid(z2);
-
-a2 =  [ones(rows(a2),1), a2];
-
+a2 =  [ones(rows(a2),1), a2]; % Add bias
 z3 = a2 * Theta2';
-a3 = sigmoid(z3);
+a3 = sigmoid(z3); % a3 = h
 
+% Theta1 and Theta2 without bias for the regularization
+Theta1_unbias = Theta1;
+Theta1_unbias(:, 1) = [];
 
-J = (1/m) * sum(sum((-y_matrix).*log(a3) - (1-y_matrix).*log(1-a3), 2));
+Theta2_unbias = Theta2;
+Theta2_unbias(:, 1) = [];
 
+% Regularization term
+reg = (lambda / (2*m)) * (sum(sum(Theta1_unbias.^2)) + sum(sum(Theta2_unbias.^2)));
+
+% Cost function regularized
+J = (1/m) * sum(sum((-y_matrix).*log(a3) - (1-y_matrix).*log(1-a3), 2)) + reg;
 
 
 
